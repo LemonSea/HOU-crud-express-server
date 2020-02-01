@@ -9,6 +9,12 @@ module.exports = {
   port: parseInt(process.env.PORT, 10),
   
   /**
+   * Local development
+   * MongoDB connect URL
+   */
+  databaseURL: process.env.MONGODB_URI,
+
+  /**
    * API configs
    */
   api: {

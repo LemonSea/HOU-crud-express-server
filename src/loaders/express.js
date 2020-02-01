@@ -7,6 +7,8 @@ const config = require('../config');
 const path = require('path');
 
 module.exports = (app) => {
+  app.get('/status', (req, res) => { res.status(200).end(); });
+  app.head('/status', (req, res) => { res.status(200).end(); });
 
   // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   // It shows the real origin IP in the heroku or Cloudwatch logs
@@ -16,7 +18,7 @@ module.exports = (app) => {
   // Alternate description:
   // Enable Cross Origin Resource Sharing to all origins by default
   app.use(cors());
-  
+
   // 开放 public 的静态资源
   app.use('/public/', express.static(path.join(__dirname) + './public/'));
 
