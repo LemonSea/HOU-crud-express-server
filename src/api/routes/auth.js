@@ -3,7 +3,7 @@ const { Container } = require("typedi");
 const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
 
-const Logger = require('../../loaders/logger'); 
+const logger = require('../../loaders/logger'); 
 
 const route = Router();
 
@@ -19,9 +19,8 @@ module.exports = (app) => {
         password: Joi.string().required(),
       }),
     }),
-    async (req, res, next) => {      
-      // const logger = Container.get(Logger);      
-      // logger.debug('Calling Sign-Up endpoint with body: %o', req.body )
+    async (req, res, next) => {   
+      logger.debug('Calling Sign-Up endpoint with body: %o', req.body )
       try {
         const { phone, password } = req.body;
         const authServiceInstance = Container.get(AuthService);
