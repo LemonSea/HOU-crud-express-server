@@ -16,35 +16,28 @@ module.exports = (app) => {
     );
   });
 
-  route.post('/user',
+  route.post(
+    '/findById',
     async (req, res, next) => {
-      const userDTO = req.body;
-      // console.log(userDTO)
-
-      const userServiceInstance = Container.get(UserService);
-      const { name, password } = await userServiceInstance.Signup(userDTO);
-
-      // 返回一个响应到客户端
-      return res.json({ name, password });
+      try {
+        const _id = req.body;
+        const userServiceInstance = Container.get(UserService);
+        const { user } = await userServiceInstance.FindUserById(_id);
+        return res.json(user).status(200);
+      } catch (e) {
+        return next(e);
+      }
     })
 
-  /**
-   * add user
-   */
-  route.post('/add',
+  route.post(
+    '/add',
     async (req, res, next) => {
       try {
         const userDTO = req.body;
-        // console.log(userDTO);
-
         const userServiceInstance = Container.get(UserService);
         const { user } = await userServiceInstance.AddUser(userDTO);
-        console.log(user)
-
-        return res.json( user ).status(200);
-        
+        return res.json(user).status(200);
       } catch (e) {
-        
         return next(e);
       }
     })

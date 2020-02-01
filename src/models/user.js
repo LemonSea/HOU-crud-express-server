@@ -12,10 +12,14 @@ const User = new mongoose.Schema({
   },
   age: {
       type: Number,
+  },
+  phone: {
+      type: String,
       required: true
   },
-  hobbies: {
-      type: String
+  password: {
+      type: String,
+      required: true
   }
 })
 
