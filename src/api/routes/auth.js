@@ -1,7 +1,11 @@
 const AuthService = require('../../services/AuthService');
 const { Container } = require("typedi");
-const route = require('express').Router();
+const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
+
+const Logger = require('../../loaders/logger'); 
+
+const route = Router();
 
 module.exports = (app) => {
 
@@ -15,13 +19,16 @@ module.exports = (app) => {
         password: Joi.string().required(),
       }),
     }),
-    async (req, res, next) => {
+    async (req, res, next) => {      
+      // const logger = Container.get(Logger);      
+      // logger.debug('Calling Sign-Up endpoint with body: %o', req.body )
       try {
         const { phone, password } = req.body;
         const authServiceInstance = Container.get(AuthService);
         const { user } = await authServiceInstance.SignIn(phone, password);
         return res.json(user).status(200);
       } catch (e) {
+        logger.error('🔥 error: %o', e);
         return next(e);
       }
     })

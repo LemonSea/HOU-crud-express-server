@@ -8,14 +8,12 @@ const path = require('path');
 // guaranteed to get dependencies
 module.exports = () => {
   const app = Router();
-  
+
   // 动态路由导入加载
   fs.readdir(path.join(__dirname, './routes'), (err, files) => {
-    files.forEach(item => {
-      const fileName = item;
+    files.forEach(fileName => {
       const name = fileName.replace(/(.*\/)*([^.]+).*/ig, "$2");
 
-      console.log(`const ${name} = require('./routes/${fileName}'); ${name}(app)`)
       eval(`const ${name} = require('./routes/${fileName}'); ${name}(app)`);
     });
   });
