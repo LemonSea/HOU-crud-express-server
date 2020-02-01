@@ -3,9 +3,9 @@ const mongooseLoader = require('./mongoose');
 
 module.exports = async ( app ) => {
   const mongoConnection = await mongooseLoader();
-  console.log('MongoDB Intialized');
+  console.dir('MongoDB Intialized');
   await expressLoader( app );
-  console.log('Express Intialized');
+  console.dir('Express Intialized');
 
   // ... more loaders can be here
 
