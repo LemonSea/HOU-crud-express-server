@@ -2,7 +2,6 @@ const AuthService = require('../../services/AuthService');
 const { Container } = require("typedi");
 const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
-
 const logger = require('../../loaders/logger'); 
 
 const route = Router();
@@ -24,8 +23,8 @@ module.exports = (app) => {
       try {
         const { phone, password } = req.body;
         const authServiceInstance = Container.get(AuthService);
-        const { user } = await authServiceInstance.SignIn(phone, password);
-        return res.json(user).status(200);
+        const { user, token } = await authServiceInstance.SignIn(phone, password);
+        return res.json({ user, token }).status(200);
       } catch (e) {
         logger.error('🔥 error: %o', e);
         return next(e);
