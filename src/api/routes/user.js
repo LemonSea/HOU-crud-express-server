@@ -26,8 +26,9 @@ module.exports = (app) => {
     async (req, res, next) => {
       try {
         const userDTO = req.body;
+        console.log(userDTO)
         const userServiceInstance = Container.get(UserService);
-        const { user } = await userServiceInstance.AddUser(userDTO);
+        const { user } = await userServiceInstance.AddOneUser(userDTO);
         return res.json(user).status(200);
       } catch (e) {
         logger.error('🔥 error: %o', e);
@@ -52,10 +53,9 @@ module.exports = (app) => {
     '/findById',
     async (req, res, next) => {
       try {
-        console.log(req.body)
         const _id = req.body;
         const userServiceInstance = Container.get(UserService);
-        const { user } = await userServiceInstance.FindUserById(_id);
+        const user = await userServiceInstance.FindUserById(_id);
         return res.json(user).status(200);
       } catch (e) {
         logger.error('🔥 error: %o', e);
@@ -127,7 +127,54 @@ module.exports = (app) => {
       try {
         const { query, param: update } = req.body;
         const userServiceInstance = Container.get(UserService);
-        const { user } = await userServiceInstance.UpdateAllUserByParam(query, update);
+        const { record } = await userServiceInstance.UpdateAllUserByParam(query, update);
+        return res.json(record).status(200);
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    }
+  )
+
+  route.post(
+    '/deleteById',
+    async (req, res, next) => {
+      try {
+        const { _id } = req.body;
+        const userServiceInstance = Container.get(UserService);
+        const { user } = await userServiceInstance.DeleteOneUserById(_id);
+        return res.json(user).status(200);
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    }
+  )
+
+  route.post(
+    '/deleteAllByIds',
+    async (req, res, next) => {
+      try {
+        console.log(req.body)
+        const { ids } = req.body;
+        console.log(ids)
+        const userServiceInstance = Container.get(UserService);
+        const { user } = await userServiceInstance.DeleteAllUserByIds(ids);
+        return res.json(user).status(200);
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    }
+  )
+
+  route.post(
+    '/deleteOneByParam',
+    async (req, res, next) => {
+      try {
+        const { param } = req.body;
+        const userServiceInstance = Container.get(UserService);
+        const { user } = await userServiceInstance.DeleteOneUserByParam(param);
         return res.json(user).status(200);
       } catch (e) {
         logger.error('🔥 error: %o', e);

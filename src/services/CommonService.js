@@ -1,11 +1,9 @@
-const User = require('../models/user')
-
 module.exports = class UserService {
   constructor() {
   }
 
   /**
-   * 创建新内容
+   * 创建一条新内容
    * @param {model} model 对应的创建模型
    * @param {Object}} param 对应模型的参数对象
    */
@@ -14,7 +12,7 @@ module.exports = class UserService {
   }
 
   /**
-   * 根据 id 查找一个,返回数据
+   * 根据 id 查找一条记录,返回数据
    * @param {model} model 查找的model
    * @param {ObjectId} _id 要查找的 _id
    */
@@ -23,7 +21,7 @@ module.exports = class UserService {
   }
 
   /**
-     * 根据条件查找一个，返回数据
+     * 根据条件查找一条记录，返回数据
      * @param {model} model 查找的 model
      * @param {Object} query param type of Object
      */
@@ -32,7 +30,7 @@ module.exports = class UserService {
   }
 
   /**
-     * 根据条件查找所有，返回数据
+     * 根据条件查找所有记录，返回数据
      * @param {model} model 查找的 model
      * @param {Object} query param type of Object
      */
@@ -41,7 +39,7 @@ module.exports = class UserService {
   }
 
   /**
-   * 查询所有，返回数据
+   * 查询所有记录，返回数据
    * @param {model} model 要查询的model
    */
   async FindAll(model) {
@@ -71,7 +69,7 @@ module.exports = class UserService {
   }
 
   /**
-   * 根据条件修改一个,返回修改后的数据
+   * 根据条件修改一条记录,返回修改后的数据
    * @param {model} model 要修改的模型
    * @param {Object} query 查找要修改数据的条件
    * @param {Object} update 要修改的内容
@@ -83,7 +81,7 @@ module.exports = class UserService {
   }
 
   /**
-   * 根据条件修改一个,返回修改前的数据
+   * 根据条件修改一条记录,返回修改前的数据
    * @param {model} model 要修改的模型
    * @param {Object} query 查找要修改数据的条件
    * @param {Object} update 要修改的内容
@@ -93,7 +91,7 @@ module.exports = class UserService {
   }
 
   /**
-   * 根据条件修改所有,返回修改的结果
+   * 根据条件修改所有记录,返回修改的结果
    * @param {model} model 要修改的模型
    * @param {Object} query 查找要修改数据的条件
    * @param {Object} update 要修改的内容
@@ -102,30 +100,30 @@ module.exports = class UserService {
     return await model.updateMany(query, update)
   }
 
-   /**
-     * 根据 _id 删除一个
-     * @param {model} model 删除的 model
-     * @param {ObjectId} _id 对应的 _id
-     */
-    async DeleteOneById(model, _id) {
-      return await model.findOneAndRemove(_id);
-    }
-  
-    /**
-     * 根据条件删除一个
-     * @param {model} model 删除的 model
-     * @param {Object} query param type of Object
-     */
-    async DeleteOneByParam(model, query) {
-      return await model.findOneAndRemove(query)
-    }
-  
-    /**
-     * 根据条件删除所有
-     * @param {model} model 删除对应的 model
-     * @param {Object} query query type of Object
-     */
-    async DeleteAllByParam(model, query) {
-      return await model.remove(query);
-    }
+  /**
+    * 根据 _id 删除一条记录,返回删除的内容
+    * @param {model} model 删除的 model
+    * @param {ObjectId} _id 对应的 _id
+    */
+  async DeleteById(model, _id) {
+    return await model.findOneAndRemove({ _id });
+  }
+
+  /**
+   * 根据条件删除一条记录,返回删除的数据
+   * @param {model} model 删除的 model
+   * @param {Object} query param type of Object
+   */
+  async DeleteOneByParam(model, query) {
+    return await model.findOneAndRemove(query)
+  }
+
+  /**
+   * 根据 ids 数组删除数据，返回删除的结果
+   * @param {model} model 删除的数据
+   * @param {Array} ids _id 数组
+   */
+  async DeleteAllByIds(model, ids) {
+    return await model.remove({ _id: { $in: ids } });
+  }
 }
