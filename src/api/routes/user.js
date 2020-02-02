@@ -12,18 +12,31 @@ module.exports = (app) => {
   // 在这里启动身份验证
   route.use(middlewares.isAuth, middlewares.attachCurrentUser);
 
-  // 获取当前 token 记录信息
   route.get('/me', (req, res, next) => {
     try {
       return res.json({ user: req.currentUser }).status(200);
-    } catch (e) {      
+    } catch (e) {
       logger.error('🔥 error: %o', e);
       return next(e);
     }
   });
 
+  route.post(
+    '/addOneUser',
+    async (req, res, next) => {
+      try {
+        const userDTO = req.body;
+        const userServiceInstance = Container.get(UserService);
+        const { user } = await userServiceInstance.AddUser(userDTO);
+        return res.json(user).status(200);
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    })
+
   route.get(
-    '/allUser',
+    '/findAllUser',
     async (req, res, next) => {
       try {
         const userServiceInstance = Container.get(UserService);
@@ -39,6 +52,7 @@ module.exports = (app) => {
     '/findById',
     async (req, res, next) => {
       try {
+        console.log(req.body)
         const _id = req.body;
         const userServiceInstance = Container.get(UserService);
         const { user } = await userServiceInstance.FindUserById(_id);
@@ -78,16 +92,48 @@ module.exports = (app) => {
     })
 
   route.post(
-    '/add',
+    '/updateById',
     async (req, res, next) => {
       try {
-        const userDTO = req.body;
+        const { _id, param: update } = req.body;
         const userServiceInstance = Container.get(UserService);
-        const { user } = await userServiceInstance.AddUser(userDTO);
+        const { user } = await userServiceInstance.UpdateOneUserById(_id, update);
         return res.json(user).status(200);
       } catch (e) {
         logger.error('🔥 error: %o', e);
         return next(e);
       }
-    })
+    }
+  )
+
+  route.post(
+    '/updateOneByParam',
+    async (req, res, next) => {
+      try {
+        const { query, param: update } = req.body;
+        const userServiceInstance = Container.get(UserService);
+        const { user } = await userServiceInstance.UpdateOneUserByParam(query, update);
+        return res.json(user).status(200);
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    }
+  )
+
+  route.post(
+    '/updateAllByParam',
+    async (req, res, next) => {
+      try {
+        const { query, param: update } = req.body;
+        const userServiceInstance = Container.get(UserService);
+        const { user } = await userServiceInstance.UpdateAllUserByParam(query, update);
+        return res.json(user).status(200);
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    }
+  )
+
 }
