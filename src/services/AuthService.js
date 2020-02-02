@@ -15,7 +15,7 @@ module.exports = class AuthService {
       logger.silly('Hashing password');
 
       //生成salt的迭代次数
-      const saltRounds = 10;
+      const saltRounds = 8;
       //随机生成salt
       const salt = await bcrypt.genSalt(saltRounds);
       //获取hash值

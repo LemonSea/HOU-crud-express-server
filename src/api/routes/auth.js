@@ -43,7 +43,7 @@ module.exports = (app) => {
       }),
     }),
     async (req, res, next) => {   
-      logger.debug('Calling Sign-Up endpoint with body: %o', req.body )
+      logger.debug('Calling Sign-In endpoint with body: %o', req.body )
       try {
         const { phone, password } = req.body;
         const authServiceInstance = Container.get(AuthService);
