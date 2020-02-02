@@ -24,8 +24,7 @@ module.exports = class AuthService extends CommonService {
       const hashedPassword = await bcrypt.hash(userInputDTO.password, salt);
       // const hashedPassword = await argon2.hash(userInputDTO.password, { salt });
       logger.silly('Creating user db record');
-      console.log(this.Create)
-      const userRecord = await this.Create(UserModel,{
+      const userRecord = await this.CreateOne(UserModel,{
         ...userInputDTO,
         salt: salt.toString('hex'),
         password: hashedPassword,
@@ -56,7 +55,7 @@ module.exports = class AuthService extends CommonService {
   // success
   async SignIn(phone, password) {
     // const userRecord = await UserModel.findOne({ phone });
-    const userRecord = await this.FindOne(UserModel, { phone });
+    const userRecord = await this.FindOneByParam(UserModel, { phone });
     if (!userRecord) {
       throw new Error('User not registered');
     }
