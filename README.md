@@ -17,10 +17,12 @@ crud-server 是一个 node.js server，目前已完成了核心骨架。
 - 待完成模型接口
 - 待完成数据接收验证封装
 - 待完成长期 job
+- 待完成 ESLint
 
 # 写在前面
 
 整个 Server 是我学习了 Node.js 的知识后做的第一个小案例，有很多不完善之处。
+该项目是参考了 [santiq/bulletproof-nodejs](https://github.com/santiq/bulletproof-nodejs)进行的配置。
 
 # 目录结构
 
