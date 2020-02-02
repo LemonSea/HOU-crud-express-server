@@ -1,5 +1,6 @@
-import jwt from 'express-jwt';
+const jwt = require('express-jwt');
 const config = require('../../config');
+const logger = require('../../loaders/logger');
 
 /**
  * We are assuming that the JWT will come in a header with the form

@@ -20,7 +20,8 @@ const User = new mongoose.Schema({
   password: {
       type: String,
       required: true
-  }
+  },
+  salt: String,
 })
 
 // 直接导出模型构造函数

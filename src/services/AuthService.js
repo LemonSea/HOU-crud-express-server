@@ -1,12 +1,14 @@
 const User = require('../models/user')
 const logger = require('../loaders/logger');
 const config = require('../config');
+const middlewares = require('../api/middlewares');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 module.exports = class AuthService {
   constructor() { }
 
+  // success
   async SignUp(userInputDTO) {
     try {
 
@@ -54,6 +56,7 @@ module.exports = class AuthService {
     }
   }
 
+  // success
   async SignIn(phone, password) {
     const userRecord = await User.findOne({ phone });
     if (!userRecord) {
@@ -83,6 +86,7 @@ module.exports = class AuthService {
     }
   }
 
+  // Token 生成
   generateToken(user) {
     const today = new Date();
     const exp = new Date(today);

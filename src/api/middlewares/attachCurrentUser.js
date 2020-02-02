@@ -10,7 +10,6 @@ const User = require('../../models/user');
  * @param {*} next  Express next Function
  */
 const attachCurrentUser = async (req, res, next) => {
-  const Logger = Container.get('logger');
   try {
     const userRecord = await User.findById(req.token._id);
     if (!userRecord) {

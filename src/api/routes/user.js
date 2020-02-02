@@ -1,4 +1,5 @@
 const UserService = require('../../services/UserService');
+const middlewares = require('../middlewares');
 const Container = require("typedi").Container;
 const route = require('express').Router();
 
@@ -6,14 +7,18 @@ module.exports = (app) => {
 
   app.use('/users', route);
 
-  route.get('/me', (req, res) => {
-    return res.status(200).json(
-      {
-        code: 200,
-        message: 'success',
-        data: {}
-      }
-    );
+  // route.get('/me', (req, res) => {
+  //   return res.status(200).json(
+  //     {
+  //       code: 200,
+  //       message: 'success',
+  //       data: {}
+  //     }
+  //   );
+  // });
+
+  route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, (req, res) => {
+    return res.json({ user: req.currentUser }).status(200);
   });
 
   route.post(

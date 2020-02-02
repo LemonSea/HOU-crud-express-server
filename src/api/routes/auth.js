@@ -1,4 +1,5 @@
 const AuthService = require('../../services/AuthService');
+const middlewares = require('../middlewares');
 const { Container } = require("typedi");
 const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
@@ -54,4 +55,14 @@ module.exports = (app) => {
       }
     })
 
+    route.post('/logout', middlewares.isAuth, (req, res, next) => {
+      logger.debug('Calling Sign-Out endpoint with body: %o', req.body)
+      try {
+        //@TODO AuthService.Logout(req.user) do some clever stuff
+        return res.status(200).end();
+      } catch (e) {
+        logger.error('🔥 error %o', e);
+        return next(e);
+      }
+    });
 }
