@@ -1,12 +1,14 @@
-const User = require('../models/user')
+const UserModel = require('../models/user')
 const logger = require('../loaders/logger');
 const config = require('../config');
-const middlewares = require('../api/middlewares');
+const CommonService = require('./CommonService');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-module.exports = class AuthService {
-  constructor() { }
+module.exports = class AuthService extends CommonService {
+  constructor() {
+    super();
+   }
 
   // success
   async SignUp(userInputDTO) {
@@ -22,11 +24,12 @@ module.exports = class AuthService {
       const hashedPassword = await bcrypt.hash(userInputDTO.password, salt);
       // const hashedPassword = await argon2.hash(userInputDTO.password, { salt });
       logger.silly('Creating user db record');
-      const userRecord = await new User({
+      console.log(this.Create)
+      const userRecord = await this.Create(UserModel,{
         ...userInputDTO,
         salt: salt.toString('hex'),
         password: hashedPassword,
-      }).save();
+      });
       
       logger.silly('Generating JWT');
       const token = this.generateToken(userRecord);
@@ -40,12 +43,6 @@ module.exports = class AuthService {
 
       // eventDispatcher.dispatch(events.user.signUp, { user: userRecord });
 
-      /**
-       * @TODO This is not the best way to deal with this
-       * There should exist a 'Mapper' layer
-       * that transforms data from layer to layer
-       * but that's too over-engineering for now
-       */
       const user = userRecord.toObject();
       Reflect.deleteProperty(user, 'password');
       Reflect.deleteProperty(user, 'salt');
@@ -58,7 +55,8 @@ module.exports = class AuthService {
 
   // success
   async SignIn(phone, password) {
-    const userRecord = await User.findOne({ phone });
+    // const userRecord = await UserModel.findOne({ phone });
+    const userRecord = await this.FindOne(UserModel, { phone });
     if (!userRecord) {
       throw new Error('User not registered');
     }
@@ -105,7 +103,7 @@ module.exports = class AuthService {
     return jwt.sign(
       {
         _id: user._id, // We are gonna use this in the middleware 'isAuth'
-        role: user.role,
+        role: user.roleId,
         name: user.name,
         exp: exp.getTime() / 1000,
       },

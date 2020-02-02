@@ -1,16 +1,19 @@
-const User = require('../models/user')
+const UserModel = require('../models/user')
+const CommonService = require('./CommonService');
 
-module.exports = class UserService {
-  constructor() { }
+module.exports = class UserService extends CommonService {
+  constructor() {
+    super();
+   }
 
   async AddUser(user) {
-    const result = await new User(user).save();
+    const result = await new UserModel(user).save();
 
     return { user: result };
   }
 
   async FindUserById(_id) {
-    const result = await User.findById(_id)
+    const result = await this.FindById(UserModel, _id);
     return { user: result };
   }
 

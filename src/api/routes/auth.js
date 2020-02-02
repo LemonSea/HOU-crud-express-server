@@ -4,7 +4,8 @@ const { Container } = require("typedi");
 const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
 
-const logger = require('../../loaders/logger'); 
+// const logger = require('../../loaders/logger'); 
+const logger = global.logger;
 
 const route = Router();
 

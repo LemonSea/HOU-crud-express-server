@@ -7,17 +7,10 @@ module.exports = (app) => {
 
   app.use('/users', route);
 
-  // route.get('/me', (req, res) => {
-  //   return res.status(200).json(
-  //     {
-  //       code: 200,
-  //       message: 'success',
-  //       data: {}
-  //     }
-  //   );
-  // });
+  // 在这里启动身份验证
+  route.use(middlewares.isAuth, middlewares.attachCurrentUser);
 
-  route.get('/me', middlewares.isAuth, middlewares.attachCurrentUser, (req, res) => {
+  route.get('/me',  (req, res) => {
     return res.json({ user: req.currentUser }).status(200);
   });
 
