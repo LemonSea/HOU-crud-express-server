@@ -6,7 +6,7 @@
   "author": "lemon",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon ./src/app.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "agenda": "^2.3.0",

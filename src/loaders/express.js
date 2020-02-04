@@ -20,7 +20,7 @@ module.exports = (app) => {
   app.use(cors());
 
   // 开放 public 的静态资源
-  app.use('/public/', express.static(path.join(__dirname) + './public/'));
+  app.use('/public/', express.static(path.join(__dirname) + '../public'));
 
   // Middleware that transforms the raw string of req.body into json
   app.use(bodyParser.json());

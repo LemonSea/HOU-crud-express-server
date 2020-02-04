@@ -1,16 +1,13 @@
-/**
- * 该文件已启用，改为 server.js 作为启动文件
- * 原因：拿不到 public 的静态文件
- */
-
 const express = require('express');
-const config = require('./config');
-const loaders = require('./loaders');
-const Logger = require('./loaders/logger');
+const config = require('./src/config');
+const loaders = require('./src/loaders');
+const Logger = require('./src/loaders/logger');
 
 async function startServer() {
 
   const app = express();
+  
+  app.use('/public/', express.static('./src/public'))
 
   await loaders(app);
   // await expressLoader(app);

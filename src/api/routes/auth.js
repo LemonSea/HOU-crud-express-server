@@ -25,8 +25,6 @@ module.exports = (app) => {
       try {
         const authServiceInstance = Container.get(AuthService);
         const { user, token } = await authServiceInstance.SignUp(req.body);
-        // res.setHeader('Set-Cookie', ['token=' + token]);
-        // return res.status(201).json({ user });
         return res.status(201).json({ user, token });
       } catch (e) {
         logger.error('🔥 error: %o', e);
