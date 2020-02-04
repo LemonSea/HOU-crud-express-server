@@ -1,18 +1,11 @@
-const IUser =  {
-  _id: string,
-  name: string,
-  email: string,
-  password: string,
-  salt: string,
-}
+const { Joi } = require('celebrate');
 
-const IUserInputDTO = {
-  name: string,
-  email: string,
-  password: string
+const IUserCreate = {
+  name: Joi.string().min(3).required(),
+  phone: Joi.string().required(),
+  password: Joi.string().required(),
 }
 
 module.exports = {
-  IUser,
-  IUserInputDTO
+  IUserCreate
 }

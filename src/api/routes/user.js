@@ -82,6 +82,7 @@ module.exports = (app) => {
     async (req, res, next) => {
       try {
         const param = req.body;
+        console.log(param)
         const userServiceInstance = Container.get(UserService);
         const { list } = await userServiceInstance.FindAllUserByParam(param);
         return res.json(list).status(200);

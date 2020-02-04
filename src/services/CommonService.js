@@ -17,7 +17,11 @@ module.exports = class UserService {
    * @param {ObjectId} _id 要查找的 _id
    */
   async FindById(model, _id) {
-    return await model.findById(_id);
+    try {
+      return await model.findById(_id);
+    } catch(e) {
+      console.log(e)
+    }
   }
 
   /**
@@ -30,7 +34,7 @@ module.exports = class UserService {
   }
 
   /**
-     * 根据条件查找所有记录，返回数据
+     * 根据条件查找所有符合条件的记录，返回数据
      * @param {model} model 查找的 model
      * @param {Object} query param type of Object
      */
